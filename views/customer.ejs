@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer</title>
+  </head>
+  <body>
+    <h1>Customer</h1>
+    <h2><%= customer.name %></h2>
+    <p><%= customer.address %></p>
+    <h3>Orders</h3>
+    <ul>
+      <% orders.forEach((order) => { %>
+      <li>
+        <a href="/orders/<%= order.id %>"
+          ><%= order.id %> - <%= order.date %> - $<%= order.value %></a
+        >
+      </li>
+      <% }); %>
+      <p></p>
+      <a href="/customers/<%= customer.id %>/delete">Delete customer</a>
+    </ul>
+  </body>
+</html>
