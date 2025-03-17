@@ -44,35 +44,33 @@ const orders = [
   { id: "20", customerId: "20", date: "2025-03-20", value: 310 },
 ];
 
-export function dbCustomersGet() {
-  return [...customers]; // Return a copy to avoid external mutations
-}
-
 export function dbCustomersGetById(id) {
-  return customers.find((c) => c.id === id);
-}
-
-export function dbCustomersAdd(customer) {
-  customers.push(customer);
+  const customer = customers.find((c) => c.id === id);
+  return customer || null; // return null for not found
 }
 
 export function dbCustomersUpdate(id, updatedData) {
   const customer = dbCustomersGetById(id);
   if (customer) {
     Object.assign(customer, updatedData);
+    return customer;
   } else {
     console.error(`Customer with id ${id} not found.`);
+    return null;
   }
 }
 
 export function dbCustomersDelete(id) {
   const index = customers.findIndex((c) => c.id === id);
   if (index !== -1) {
+    const deleted = customers[index];
     customers.splice(index, 1);
     // clean up any orders for this customer
     dbOrdersGetByCustomerId(id).forEach((o) => dbOrdersDelete(o.id));
+    return deleted;
   } else {
     console.error(`Customer with id ${id} not found.`);
+    return null;
   }
 }
 
@@ -81,31 +79,43 @@ export function dbOrdersGet() {
 }
 
 export function dbOrdersGetById(id) {
-  return orders.find((o) => o.id === id);
+  const order = orders.find((o) => o.id === id);
+  return order ? { ...order } : null; // return copy if found, null if not
 }
 
 export function dbOrdersGetByCustomerId(customerId) {
-  return orders.filter((o) => o.customerId === customerId);
+  return orders
+    .filter((o) => o.customerId === customerId)
+    .map((o) => ({ ...o })); // return a shallow copy of the matching orders
 }
 
 export function dbOrdersAdd(order) {
-  orders.push(order);
+  const orderCopy = { ...order };
+  // generate an id of 1+ the current highest
+  orderCopy.id = orders.reduce((max, o) => Math.max(max, o.id), 0) + 1;
+  orders.push(orderCopy);
+  return { ...orderCopy };
 }
 
 export function dbOrdersUpdate(id, updatedData) {
   const order = dbOrdersGetById(id);
   if (order) {
     Object.assign(order, updatedData);
+    return order;
   } else {
     console.error(`Order with id ${id} not found.`);
+    return null;
   }
 }
 
 export function dbOrdersDelete(id) {
   const index = orders.findIndex((o) => o.id === id);
   if (index !== -1) {
+    const order = orders[index];
     orders.splice(index, 1);
+    return order;
   } else {
     console.error(`Order with id ${id} not found.`);
+    return null;
   }
 }
