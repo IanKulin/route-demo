@@ -46,14 +46,14 @@ const orders = [
 
 export function dbCustomersGetById(id) {
   const customer = customers.find((c) => c.id === id);
-  return customer || null; // return null for not found
+  return { ...customer} || null; // return null for not found
 }
 
 export function dbCustomersUpdate(id, updatedData) {
   const customer = dbCustomersGetById(id);
   if (customer) {
     Object.assign(customer, updatedData);
-    return customer;
+    return { ...customer};
   } else {
     console.error(`Customer with id ${id} not found.`);
     return null;
@@ -91,8 +91,9 @@ export function dbOrdersGetByCustomerId(customerId) {
 
 export function dbOrdersAdd(order) {
   const orderCopy = { ...order };
-  // generate an id of 1+ the current highest
-  orderCopy.id = orders.reduce((max, o) => Math.max(max, o.id), 0) + 1;
+  // since id is a stringified number, finding the max is a bit of a mess
+  const maxId = orders.reduce((max, o) => Math.max(max, parseInt(o.id, 10)), 0);
+  orderCopy.id = String(maxId + 1);
   orders.push(orderCopy);
   return { ...orderCopy };
 }
@@ -101,7 +102,7 @@ export function dbOrdersUpdate(id, updatedData) {
   const order = dbOrdersGetById(id);
   if (order) {
     Object.assign(order, updatedData);
-    return order;
+    return { ...order};
   } else {
     console.error(`Order with id ${id} not found.`);
     return null;
