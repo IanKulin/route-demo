@@ -46,14 +46,14 @@ const orders = [
 
 export function dbCustomersGetById(id) {
   const customer = customers.find((c) => c.id === id);
-  return { ...customer} || null; // return null for not found
+  return { ...customer } || null; // return null for not found
 }
 
 export function dbCustomersUpdate(id, updatedData) {
   const customer = dbCustomersGetById(id);
   if (customer) {
     Object.assign(customer, updatedData);
-    return { ...customer};
+    return { ...customer };
   } else {
     console.error(`Customer with id ${id} not found.`);
     return null;
@@ -102,7 +102,7 @@ export function dbOrdersUpdate(id, updatedData) {
   const order = dbOrdersGetById(id);
   if (order) {
     Object.assign(order, updatedData);
-    return { ...order};
+    return { ...order };
   } else {
     console.error(`Order with id ${id} not found.`);
     return null;
