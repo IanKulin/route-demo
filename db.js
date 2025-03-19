@@ -50,7 +50,7 @@ export function dbCustomersGet() {
 
 export function dbCustomersGetById(id) {
   const customer = customers.find((c) => c.id === id);
-  return { ...customer } || null; // return null for not found
+  return customer ? { ...customer } : null; // return null for not found
 }
 
 export function dbCustomersAdd(customer) {
@@ -66,10 +66,10 @@ export function dbCustomersAdd(customer) {
 }
 
 export function dbCustomersUpdate(id, updatedData) {
-  const customer = dbCustomersGetById(id);
-  if (customer) {
-    Object.assign(customer, updatedData);
-    return { ...customer };
+  const index = customers.findIndex((c) => c.id === id);
+  if (index !== -1) {
+    Object.assign(customers[index], updatedData);
+    return { ...customers[index] };
   } else {
     console.error(`Customer with id ${id} not found.`);
     return null;
@@ -115,10 +115,10 @@ export function dbOrdersAdd(order) {
 }
 
 export function dbOrdersUpdate(id, updatedData) {
-  const order = dbOrdersGetById(id);
-  if (order) {
-    Object.assign(order, updatedData);
-    return { ...order };
+  const index = orders.findIndex((o) => o.id === id);
+  if (index !== -1) {
+    Object.assign(orders[index], updatedData);
+    return { ...orders[index] };
   } else {
     console.error(`Order with id ${id} not found.`);
     return null;
