@@ -44,9 +44,25 @@ const orders = [
   { id: "20", customerId: "20", date: "2025-03-20", value: 310 },
 ];
 
+export function dbCustomersGet() {
+  return [...customers];
+}
+
 export function dbCustomersGetById(id) {
   const customer = customers.find((c) => c.id === id);
   return { ...customer } || null; // return null for not found
+}
+
+export function dbCustomersAdd(customer) {
+  const customerCopy = { ...customer };
+  // since id is a stringified number, finding the max is a bit of a mess
+  const maxId = customers.reduce(
+    (max, o) => Math.max(max, parseInt(o.id, 10)),
+    0
+  );
+  customerCopy.id = String(maxId + 1);
+  customers.push(customerCopy);
+  return { ...customerCopy };
 }
 
 export function dbCustomersUpdate(id, updatedData) {
