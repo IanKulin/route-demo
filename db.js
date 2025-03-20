@@ -56,10 +56,7 @@ export function dbCustomersGetById(id) {
 export function dbCustomersAdd(customer) {
   const customerCopy = { ...customer };
   // since id is a stringified number, finding the max is a bit of a mess
-  const maxId = customers.reduce(
-    (max, o) => Math.max(max, parseInt(o.id, 10)),
-    0
-  );
+  const maxId = customers.reduce((max, o) => Math.max(max, parseInt(o.id)), 0);
   customerCopy.id = String(maxId + 1);
   customers.push(customerCopy);
   return { ...customerCopy };
@@ -108,7 +105,7 @@ export function dbOrdersGetByCustomerId(customerId) {
 export function dbOrdersAdd(order) {
   const orderCopy = { ...order };
   // since id is a stringified number, finding the max is a bit of a mess
-  const maxId = orders.reduce((max, o) => Math.max(max, parseInt(o.id, 10)), 0);
+  const maxId = orders.reduce((max, o) => Math.max(max, parseInt(o.id)), 0);
   orderCopy.id = String(maxId + 1);
   orders.push(orderCopy);
   return { ...orderCopy };
