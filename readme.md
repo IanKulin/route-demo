@@ -1,0 +1,1 @@
+Demo for using Express router to split routes out into separate files. As discussed in this [blog post](https://devendevour.wordpress.com/2025/04/28/express-router-for-better-code-organisation/).
