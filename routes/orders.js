@@ -17,7 +17,15 @@ router.get("/", (req, res) => {
 // GET /orders/:id
 router.get("/:id", (req, res) => {
   const order = dbOrdersGetById(req.params.id);
+  if (!order) {
+    res.status(404).send("Order not found");
+    return;
+  }
   const customer = dbCustomersGetById(order.customerId);
+  if (!customer) {
+    res.status(404).send("Customer not found");
+    return;
+  }
   res.render("order", { order, customer });
 });
 
